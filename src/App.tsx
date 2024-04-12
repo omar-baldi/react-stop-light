@@ -1,7 +1,12 @@
 import "./App.css";
+import StopLight from "./components/StopLight";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <StopLight />
+    </>
+  );
 }
 
 export default App;
