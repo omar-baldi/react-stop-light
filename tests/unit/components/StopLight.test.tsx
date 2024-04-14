@@ -1,7 +1,7 @@
 import StopLight from "@/components/StopLight";
 import type { StopLightColor } from "@/types";
 import "@testing-library/jest-dom";
-import { render, RenderResult } from "@testing-library/react";
+import { act, render, RenderResult } from "@testing-library/react";
 import { vi } from "vitest";
 
 vi.mock("@/constants", () => {
@@ -16,7 +16,13 @@ vi.mock("@/constants", () => {
   };
 });
 
+vi.useFakeTimers();
+
 describe("StopLight", () => {
+  afterEach(() => {
+    vi.clearAllTimers();
+  });
+
   function getStopLightElement(wrapper: RenderResult, stopLight: StopLightColor) {
     const dataTestId = `stop-light-${stopLight}`;
     return wrapper.getByTestId(dataTestId, { exact: false });
@@ -34,4 +40,44 @@ describe("StopLight", () => {
       expect(stopLightElement).toHaveStyle({ backgroundColor: expectedBackgroundColor });
     }
   );
+
+  it("should switch stop-light colors after defined milliseconds", async () => {
+    const wrapper = render(<StopLight />);
+
+    act(() => vi.advanceTimersByTime(2000));
+
+    expect(getStopLightElement(wrapper, "red")).toHaveStyle({
+      backgroundColor: "grey",
+    });
+    expect(getStopLightElement(wrapper, "yellow")).toHaveStyle({
+      backgroundColor: "grey",
+    });
+    expect(getStopLightElement(wrapper, "green")).toHaveStyle({
+      backgroundColor: "green",
+    });
+
+    act(() => vi.advanceTimersByTime(1000));
+
+    expect(getStopLightElement(wrapper, "red")).toHaveStyle({
+      backgroundColor: "grey",
+    });
+    expect(getStopLightElement(wrapper, "yellow")).toHaveStyle({
+      backgroundColor: "yellow",
+    });
+    expect(getStopLightElement(wrapper, "green")).toHaveStyle({
+      backgroundColor: "grey",
+    });
+
+    act(() => vi.advanceTimersByTime(500));
+
+    expect(getStopLightElement(wrapper, "red")).toHaveStyle({
+      backgroundColor: "red",
+    });
+    expect(getStopLightElement(wrapper, "yellow")).toHaveStyle({
+      backgroundColor: "grey",
+    });
+    expect(getStopLightElement(wrapper, "green")).toHaveStyle({
+      backgroundColor: "grey",
+    });
+  });
 });
