@@ -7,6 +7,8 @@
     "start": "vite",
     "build": "tsc && vite build",
     "test": "vitest --run",
+    "test:hooks": "vitest hooks --run",
+    "test:components": "vitest components --run",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -15,6 +17,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^15.0.1",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.12.7",

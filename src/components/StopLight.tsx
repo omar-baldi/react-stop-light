@@ -12,6 +12,7 @@ export default function StopLight() {
         return (
           <div
             key={stopLight}
+            data-testid={`stop-light stop-light-${stopLight}`}
             style={{
               height: "50px",
               width: "50px",
